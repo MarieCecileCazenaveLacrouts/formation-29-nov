@@ -6,26 +6,21 @@ if (!require("dplyr")) install.packages("dplyr")
 if (!require("tidyverse")) install.packages("tidyverse")
 if (!require("MASS")) install.packages("MASS")
 
+
 library(tidyverse)
 library(dplyr)
 library(forcats)
 library(MASS)
 library(yaml)
 
+source("R/functions.R", encoding = "UTF-8")
+
+
 
 # ENVIRONNEMENT ----------------------------
 
-api_token <- yaml::read_yaml("secrets.yaml")$JETON_API
+api_token <- yaml::read_yaml("R/secrets.yaml")$JETON_API
 
-
-# APPEL DE FONCTIONS  ----------------------------
-source("R/functions.R", encoding = "UTF-8")
-
-# FONCTIONS ----------------------------
-
-fonction_de_stat_agregee(rnorm(10))
-fonction_de_stat_agregee(rnorm(10), "ecart-type")
-fonction_de_stat_agregee(rnorm(10), "variance")
 
 
 
@@ -142,24 +137,27 @@ p <- ggplot(df3) +
 ggsave("p.png", p)
 
 
+
+
+
 # STATS AGREGEES =================
 
-fonction_de_stat_agregee(df %>%
-                           filter(sexe == "Homme") %>%
-                           mutate(aged = aged) %>%
-                           pull(aged))
-fonction_de_stat_agregee(df %>%
-                           filter(sexe == "Femme") %>%
-                           mutate(aged = aged) %>%
-                           pull(aged))
-fonction_de_stat_agregee(df %>%
-                           filter(sexe == "Homme" & couple == "2") %>%
-                           mutate(aged = aged) %>%
-                           pull(aged))
-fonction_de_stat_agregee(df %>%
-                           filter(sexe == "Femme" & couple == "2") %>%
-                           mutate(aged = aged) %>%
-                           pull(aged))
+stats_agregees(df %>%
+                 filter(sexe == "Homme") %>%
+                 mutate(aged = aged) %>%
+                 pull(aged))
+stats_agregees(df %>%
+                 filter(sexe == "Femme") %>%
+                 mutate(aged = aged) %>%
+                 pull(aged))
+stats_agregees(df %>%
+                 filter(sexe == "Homme" & couple == "2") %>%
+                 mutate(aged = aged) %>%
+                 pull(aged))
+stats_agregees(df %>%
+                 filter(sexe == "Femme" & couple == "2") %>%
+                 mutate(aged = aged) %>%
+                 pull(aged))
 
 # MODELISATION =================
 
