@@ -1,14 +1,17 @@
 
 # modifications faites sur le script de base
-
+library(tidyverse)
+library(dplyr)
 library(lintr)
 library(styler)
+library(forcats)
+library(MASS)
 
 lintr::use_lintr(type = "tidyverse")
 
 lintr::lint("script.R")
 
-
+# regle de 100 caractères par ligne à appliquer, ça suffit
 
 rm(list = ls())
 
@@ -18,8 +21,7 @@ if (!require("dplyr")) install.packages("dplyr")
 if (!require("tidyverse")) install.packages("tidyverse")
 
 
-library(tidyverse)
-library(dplyr)
+
 
 # j'importe les données avec read_csv2 parce que c'est un csv avec des ; et que read_csv attend comme separateur des ,
 df <- readr::read_csv2(
@@ -122,7 +124,7 @@ df2[df2$naf08 == "ZZZZZ", "naf08"] <- NA
 str(df2)
 df2[, ncol(df2) - 1] <- factor(df2[, ncol(df2) - 1])
 df2$ur <- factor(df2$ur)
-library(forcats)
+
 df2$sexe <-
   fct_recode(df2$sexe, "Homme" = "0", "Femme" = "1")
 
@@ -136,7 +138,7 @@ fonction_de_stat_agregee <- function(a, b = "moyenne", ...) {
 
   if (b == "moyenne") {
     x <- mean(a, na.rm = T, ...)
-  } else if (b == "ecart-type" | b == "sd") {
+  } else if (b == "ecart-type" || b == "sd") {
     x <- sd(a, na.rm = T, ...)
   } else if (b == "variance") {
     x <- var(a, na.rm = T, ...)
@@ -156,7 +158,7 @@ fonction_de_stat_agregee(df2 %>% filter(sexe == "Femme" & couple == "2") %>% mut
 api_pwd <- "trotskitueleski$1917"
 
 # modelisation
-library(MASS)
+
 df3 <- df2 %>%
   dplyr::select(surf, cs1, ur, couple, aged) %>%
   filter(surf != "Z")
